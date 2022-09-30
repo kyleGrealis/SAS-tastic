@@ -19,6 +19,8 @@ libname SD "&home";
 	%let i = 1;
 	%do i = 1 %to 3;
 		proc print data = SD.&var&i;
+		title "Report rendered on %sysfunc(today(), weekdate.)";
+		footnote "same as &sysdate9";
 		run;
 	%end;
 %mend printLoop;
