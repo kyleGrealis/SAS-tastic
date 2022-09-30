@@ -1,0 +1,30 @@
+options symbolgen;
+
+libname SD "&home";
+%let var = score_month;
+
+%macro importLoop;
+	%local i;
+	%let i = 1;
+	%do i = 1 %to 3;
+		proc import datafile = "&home./udemyCertFiles/&var&i..xlsx"
+			dbms = xlsx replace 
+			out = SD.&var&i;
+			run;
+	%end;
+%mend importLoop;
+
+%macro printLoop;
+	%local i;
+	%let i = 1;
+	%do i = 1 %to 3;
+		proc print data = SD.&var&i;
+		run;
+	%end;
+%mend printLoop;
+
+%importLoop;
+%printLoop;
+
+options nosymbolgen;
+
