@@ -1,0 +1,7 @@
+proc tabulate data=&data;
+	class FEV1diff FEV1Change FVCdiff FVCChange gender;
+	var age;
+	table FEV1diff FEV1Change FVCdiff FVCChange, 
+				gender*(n rowpctn="%") age*(mean min*f=2.0 max*f=2.0) all (n colpctn);
+	title "Table 1: Total sample size = 1641";
+	run;
