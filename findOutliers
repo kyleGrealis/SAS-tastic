@@ -1,0 +1,28 @@
+proc reg data=model.as_1 
+	plots(only)=(rstudentbyleverage cooksd dffits);
+	model y=x1 x2 x3 ... xn / clb alpha=0.05;
+	output out=diagnostics h=leverage rstudent=rstudent cookd=cooksd dffits=dffits;
+	run;
+
+data model.review;
+	set diagnostics;
+	flag_cooksd=0; flag_dffits=0; flag_rstudent=0; flag_leverage=0;
+	n=200; k=7;
+	h_cut=2*(k+1)/n;
+	cooksd_cut=4/n;
+	dffits_cut=2*sqrt((k+1)/n);
+	if abs(rstudent)>2 then flag_rstudent+1;
+	if leverage>h_cut then flag_leverage+1;
+	if cooksd>cooksd_cut then flag_cooksd+1;
+	if abs(dffits)>dffits_cut then flag_dffits+1;
+	run;
+
+proc print data=model.review noobs;
+	var stuid readscore leverage h_cut rstudent cooksd cooksd_cut dffits dffits_cut
+			flag_leverage flag_rstudent flag_cooksd flag_dffits;
+	where flag_cooksd>0 or flag_dffits>0 or flag_rstudent>0 or flag_leverage>0;
+	run;
+	
+proc freq data=model.review;
+	table flag_leverage*flag_rstudent flag_cooksd*flag_dffits;
+	run;
