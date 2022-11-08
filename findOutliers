@@ -28,6 +28,7 @@ proc freq data=model.review;
 	run;
 
 
+
 * same model but using INFLUENCE in the model statment;
 proc reg data=model.as_1 
 	plots(only)=(rstudentbyleverage cooksd dffits dfbetas(label unpack));
