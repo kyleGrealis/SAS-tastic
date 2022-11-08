@@ -1,5 +1,4 @@
 
-
 %macro newsurv(
     /*** 1.0: Required Variables ***/
     cens=,cen_vl=0,data=,ev_vl=,method=KM,time=,
