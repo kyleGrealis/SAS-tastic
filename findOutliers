@@ -18,11 +18,19 @@ data model.review;
 	run;
 
 proc print data=model.review noobs;
-	var stuid readscore leverage h_cut rstudent cooksd cooksd_cut dffits dffits_cut
+	var id y leverage h_cut rstudent cooksd cooksd_cut dffits dffits_cut
 			flag_leverage flag_rstudent flag_cooksd flag_dffits;
 	where flag_cooksd>0 or flag_dffits>0 or flag_rstudent>0 or flag_leverage>0;
 	run;
 	
 proc freq data=model.review;
 	table flag_leverage*flag_rstudent flag_cooksd*flag_dffits;
+	run;
+
+
+* same model but using INFLUENCE in the model statment;
+proc reg data=model.as_1 
+	plots(only)=(rstudentbyleverage cooksd dffits dfbetas(label unpack));
+	model y=x1 x2 x3 ... xn / INFLUENCE clb alpha=0.05;
+	output out=diagnostics h=leverage rstudent=rstudent cookd=cooksd dffits=dffits;
 	run;
