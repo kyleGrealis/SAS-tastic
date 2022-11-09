@@ -1,0 +1,20 @@
+/* this file will demonstrate how to impute a SAS macro value based on conditions within the dataset */
+
+proc means data=model.as_1 mean;
+	var sms;
+	output out=values mean=calcMean;
+	run;
+
+data _null_;
+	set values;
+	call symput("macroMean", trim(left(calcMean)));
+	run;
+
+%put calculated mean=&macroMean;
+
+data test;
+	set model.as_1;
+	if sms=. then new=&macroMean;
+		else new=sms;
+	keep sms new;
+	run;
