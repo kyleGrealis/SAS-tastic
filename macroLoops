@@ -1,15 +1,22 @@
+******************************************************************************************
+This script will import data files that share the same base name, but have differing
+numeric suffix (i.e.-- datafile1, datafile2, datafile8...). It will loop through all
+files contained in the filepath, import them into a permanent library, and print the
+first 25 observations.
+******************************************************************************************
+
 options symbolgen;
 
-libname SD "&home";
-%let var = score_month;
+libname library "&home";
+%let var = X1;
 
 %macro importLoop;
 	%local i;
 	%let i = 1;
 	%do i = 1 %to 3;
-		proc import datafile = "&home./udemyCertFiles/&var&i..xlsx"
+		proc import datafile = "&home./filepath/&var&i..xlsx"
 			dbms = xlsx replace 
-			out = SD.&var&i;
+			out = library.&var&i;
 			run;
 	%end;
 %mend importLoop;
@@ -18,7 +25,7 @@ libname SD "&home";
 	%local i;
 	%let i = 1;
 	%do i = 1 %to 3;
-		proc print data = SD.&var&i;
+		proc print data = library.&var&i (obs=25);
 		title "Report rendered on %sysfunc(today(), weekdate.)";
 		footnote "same as &sysdate9";
 		run;
@@ -27,6 +34,4 @@ libname SD "&home";
 
 %importLoop;
 %printLoop;
-
-options nosymbolgen;
 
