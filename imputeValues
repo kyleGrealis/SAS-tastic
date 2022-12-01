@@ -1,7 +1,7 @@
 /* this file will demonstrate how to impute a SAS macro value based on conditions within the dataset */
 
-proc means data=model.as_1 mean;
-	var sms;
+proc means library.dataset mean;
+	var X1;
 	output out=values mean=calcMean;
 	run;
 
@@ -14,7 +14,7 @@ data _null_;
 
 data test;
 	set model.as_1;
-	if sms=. then new=&macroMean;
+	if X1=. then new=&macroMean;
 		else new=sms;
-	keep sms new;
+	keep X1 new;
 	run;
