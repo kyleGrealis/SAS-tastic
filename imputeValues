@@ -1,6 +1,6 @@
 /* this file will demonstrate how to impute a SAS macro value based on conditions within the dataset */
 
-proc means library.dataset mean;
+proc means library.dataset mean;	/* this will impute the mean */
 	var X1;
 	output out=values mean=calcMean;
 	run;
