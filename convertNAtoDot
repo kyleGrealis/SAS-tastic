@@ -6,16 +6,16 @@ change numeric to character variables by replacing the NA with .
 
 
 data _null_;
-   infile '/home/xxxx/original.csv' dsd truncover ;
-   file '/home/xxxx/fixed.csv' dsd ;
-   length word $200 ;
-   /* change the value to reflect total number of rows in the original dataset */
-   do i=1 to 20;
-      input word @;
-      if word='NA' then word=.;
-      put word @;
-   end;
-   put;
+  infile '/home/xxxx/original.csv' dsd truncover ;
+  file '/home/xxxx/fixed.csv' dsd ;
+  length word $200 ;
+  /* change the value to reflect total number of rows in the original dataset */
+  do i=1 to 20;
+     input word @;
+     if word='NA' then word=.;
+     put word @;
+  end;
+  put;
 run;
 
 *proc import....;
